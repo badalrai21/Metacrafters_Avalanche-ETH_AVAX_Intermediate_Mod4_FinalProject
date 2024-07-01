@@ -1,23 +1,23 @@
 # Introduction to FantasyToken (ERC20)
 
-Welcome to the FantasyToken project, an ERC20-compliant token designed for a fantasy-themed gaming environment. This smart contract allows players to earn, trade, and redeem tokens for various in-game items. The contract includes essential functionalities such as minting, transferring, burning tokens, and redeeming fantasy items like heals, potions, swords, shields, and magic artifacts.
+Welcome to the ```FantasyToken``` project, an ```ERC20-compliant``` token designed for a fantasy-themed ```gaming``` environment. This smart contract allows players to earn, trade, and redeem tokens for various in-game items. The contract includes essential functionalities such as minting, transferring, burning tokens, and redeeming fantasy items like ```heals```, ```potions```, ```swords```, ```shields```, and ```magic``` artifacts.
 
 ## Description
 
 ### Key Features
-#### ➛ Minting New Tokens:
+#### ➛ ```Minting New Tokens```:
 The owner can mint new tokens and distribute them to players who purchase tokens. Players are added to a queue, and tokens are minted and distributed accordingly.  
   
-#### ➛ Transferring Tokens:
+#### ➛ ```Transferring Tokens```:
 Players can transfer their tokens to other players, enabling a dynamic in-game economy.  
   
-#### ➛ Redeeming Fantasy Items:
+#### ➛ ```Redeeming Fantasy Items```:
 Players can redeem their tokens for in-game items such as heals, potions, swords, shields, and magic. Each item has a specific token cost, promoting strategic gameplay.      
   
-#### ➛ Checking Token Balance:
+#### ➛ ```Checking Token Balance```:
 Players can check their token balance at any time to keep track of their resources.    
   
-#### ➛ Burning Tokens:
+#### ➛ ```Burning Tokens```:
 Players can burn tokens they no longer need, helping to manage the total token supply and maintaining a balanced in-game economy.  
 
 ## Getting Started
@@ -30,8 +30,8 @@ Players can burn tokens they no longer need, helping to manage the total token s
 ### Executing program
 
 #### Prerequisites
-➛ Remix IDE: A web-based integrated development environment for Ethereum smart contracts (https://remix.ethereum.org) to access the IDE.
-➛ MetaMask: A browser extension wallet for interacting with Ethereum-based applications.
+➛ ```Remix IDE```: A web-based integrated development environment for Ethereum smart contracts (https://remix.ethereum.org) to access the IDE.
+➛ ```MetaMask```: A browser extension wallet for interacting with Ethereum-based applications.
 
 #### Deployment on Remix IDE
 1. Open the remix ide in your web browser.
