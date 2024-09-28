@@ -1,91 +1,65 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-contract FantasyToken is ERC20, Ownable, ERC20Burnable {
+contract DegenGamingToken is ERC20 {
+    
+    event TokensRedeemed(address indexed player, uint256 amount, string item);
 
-    constructor() ERC20("FantasyToken", "FT") Ownable(msg.sender) {}
+    string[] public availableItems;
 
-    // Enum for different fantasy items
-    enum FantasyItem { Heal, Potion, Sword, Shield, Magic }
+    mapping(address => mapping(string => uint256)) public redemptions;
 
-    struct Player {
-        address playerAddress;
-        uint256 amount;
-    }
+    mapping(string => bool) private itemExists;
 
-    Player[] public playerQueue;
+    address private _owner;
 
-    struct PlayerInventory {
-        uint256 heal;
-        uint256 potion;
-        uint256 sword;
-        uint256 shield;
-        uint256 magic;
-    }
+    constructor(address initialOwner) ERC20("DegenGamingToken", "DGT") {
+         _owner = initialOwner;
 
-    mapping(address => PlayerInventory) public playerInventories;
+        availableItems.push("Football");
+        availableItems.push("Jersey");
+        availableItems.push("Shoes");
+        availableItems.push("Gloves");
+        availableItems.push("Whistle");
 
-    function buyTokens(address _playerAddress, uint256 _amount) public {
-        playerQueue.push(Player({ playerAddress: _playerAddress, amount: _amount }));
-    }
-
-    function distributeTokens() public onlyOwner {
-        while (playerQueue.length > 0) {
-            uint256 lastIndex = playerQueue.length - 1;
-            if (playerQueue[lastIndex].playerAddress != address(0)) {
-                _mint(playerQueue[lastIndex].playerAddress, playerQueue[lastIndex].amount);
-                playerQueue.pop();
-            }
+        for (uint256 i = 0; i < availableItems.length; i++) {
+            itemExists[availableItems[i]] = true;
         }
     }
-
-    function transferTokens(address _to, uint256 _amount) public {
-        require(_amount <= balanceOf(msg.sender), "Insufficient tokens");
-        _transfer(msg.sender, _to, _amount);
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "Not the owner");
+        _;
     }
 
-    function redeemItem(FantasyItem _item) public {
-        uint256 requiredTokens;
-        if (_item == FantasyItem.Heal) {
-            requiredTokens = 10;
-        } else if (_item == FantasyItem.Potion) {
-            requiredTokens = 20;
-        } else if (_item == FantasyItem.Sword) {
-            requiredTokens = 30;
-        } else if (_item == FantasyItem.Shield) {
-            requiredTokens = 40;
-        } else if (_item == FantasyItem.Magic) {
-            requiredTokens = 50;
-        } else {
-            revert("Invalid item selected");
-        }
-
-        require(balanceOf(msg.sender) >= requiredTokens, "Insufficient tokens");
-
-        if (_item == FantasyItem.Heal) {
-            playerInventories[msg.sender].heal++;
-        } else if (_item == FantasyItem.Potion) {
-            playerInventories[msg.sender].potion++;
-        } else if (_item == FantasyItem.Sword) {
-            playerInventories[msg.sender].sword++;
-        } else if (_item == FantasyItem.Shield) {
-            playerInventories[msg.sender].shield++;
-        } else if (_item == FantasyItem.Magic) {
-            playerInventories[msg.sender].magic++;
-        }
-
-        _burn(msg.sender, requiredTokens);
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
     }
 
-    function burnTokens(uint256 _amount) public {
-        _burn(msg.sender, _amount);
+    function redeemTokens(uint256 amount, string memory item) external {
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        require(itemExists[item], "Item not available for redemption");
+
+        _burn(msg.sender, amount);
+        redemptions[msg.sender][item] += amount;
+        emit TokensRedeemed(msg.sender, amount, item);
     }
 
-    function checkTokenBalance() public view returns (uint256) {
-        return balanceOf(msg.sender);
+    function getTokenBalance(address account) external view returns (uint256) {
+        return balanceOf(account);
+    }
+
+    function burn(uint256 amount) external {
+        _burn(msg.sender, amount);
+    }
+
+    function getAvailableItems() external view returns (string[] memory) {
+        return availableItems;
+    }
+
+    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
+        return super.transfer(recipient, amount);
     }
 }
