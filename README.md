@@ -51,7 +51,7 @@ Players can burn tokens they no longer need, helping to manage the total token s
 
 
 ### CODE
----
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -117,7 +117,9 @@ contract DegenGamingToken is ERC20 {
         return super.transfer(recipient, amount);
     }
 }
----
+```javascript
+
+
 ## Help
 If you encounter any issues or have questions about this project, there are several resources available to assist you:
 
