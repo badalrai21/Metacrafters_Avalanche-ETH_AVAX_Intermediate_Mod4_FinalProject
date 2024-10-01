@@ -117,7 +117,7 @@ contract DegenGamingToken is ERC20 {
         return super.transfer(recipient, amount);
     }
 }
-```javascript
+```
 
 
 ## Help
